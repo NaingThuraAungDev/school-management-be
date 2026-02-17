@@ -1,0 +1,1336 @@
+{
+    "info": {
+        "name": "School Management API",
+        "description": "Complete API collection for School Management System",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "version": "1.0.0"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{jwt_token}}",
+                "type": "string"
+            }
+        ]
+    },
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "https://localhost:5001/api",
+            "type": "string"
+        },
+        {
+            "key": "jwt_token",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.collectionVariables.set('jwt_token', jsonData.token);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"admin@school.com\",\n  \"password\": \"Admin@123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Change Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"currentPassword\": \"OldPassword@123\",\n  \"newPassword\": \"NewPassword@123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/change-password",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "change-password"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Reset Password",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"userId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"newPassword\": \"ResetPassword@123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/auth/reset-password",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "auth",
+                                "reset-password"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Students",
+            "item": [
+                {
+                    "name": "Get Students List",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/students?pageNumber=1&pageSize=10",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students"
+                            ],
+                            "query": [
+                                {
+                                    "key": "pageNumber",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "searchTerm",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "classSectionId",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "isActive",
+                                    "value": "true",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Student by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/students/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Admit Student",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"2010-05-15T00:00:00Z\",\n  \"gender\": 0,\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"Student@123\",\n  \"phone\": \"+1234567890\",\n  \"address\": \"123 Main St, City\",\n  \"classSectionId\": null,\n  \"academicYearId\": null\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/students",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Student",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"2010-05-15T00:00:00Z\",\n  \"gender\": 0,\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"+1234567890\",\n  \"address\": \"123 Main St, City\",\n  \"classSectionId\": null,\n  \"isActive\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/students/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Student",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/students/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Link Guardian",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"studentId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"name\": \"Jane Doe\",\n  \"mobile\": \"+1234567890\",\n  \"email\": \"jane.doe@example.com\",\n  \"relationship\": 1,\n  \"address\": \"123 Main St, City\",\n  \"occupation\": \"Engineer\",\n  \"isPrimaryContact\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/students/:studentId/guardians",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students",
+                                ":studentId",
+                                "guardians"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "studentId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Upload Document",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "studentId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "documentType",
+                                    "value": "0",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "file",
+                                    "type": "file",
+                                    "src": []
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/students/:studentId/documents",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "students",
+                                ":studentId",
+                                "documents"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "studentId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Staff",
+            "item": [
+                {
+                    "name": "Get Staff List",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/staff?pageNumber=1&pageSize=10",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "staff"
+                            ],
+                            "query": [
+                                {
+                                    "key": "pageNumber",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "pageSize",
+                                    "value": "10"
+                                },
+                                {
+                                    "key": "searchTerm",
+                                    "value": "",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "staffType",
+                                    "value": "0",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "isActive",
+                                    "value": "true",
+                                    "disabled": true
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Staff by ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/staff/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "staff",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Onboard Staff",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"firstName\": \"Sarah\",\n  \"lastName\": \"Johnson\",\n  \"email\": \"sarah.johnson@school.com\",\n  \"password\": \"Staff@123\",\n  \"phone\": \"+1234567890\",\n  \"qualification\": \"M.Ed in Mathematics\",\n  \"joiningDate\": \"2026-02-01T00:00:00Z\",\n  \"staffType\": 0\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/staff",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "staff"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Staff",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"firstName\": \"Sarah\",\n  \"lastName\": \"Johnson\",\n  \"email\": \"sarah.johnson@school.com\",\n  \"phone\": \"+1234567890\",\n  \"qualification\": \"M.Ed in Mathematics\",\n  \"staffType\": 0,\n  \"isActive\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/staff/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "staff",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Staff",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/staff/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "staff",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Assign Staff Role",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"staffId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"role\": 0,\n  \"classSectionId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"academicYearId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/staff/:staffId/roles",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "staff",
+                                ":staffId",
+                                "roles"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "staffId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Classes",
+            "item": [
+                {
+                    "name": "Get Classes",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/classes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Class",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Grade 5\",\n  \"sortOrder\": 5,\n  \"description\": \"Fifth grade curriculum\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/classes",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Sections",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/classes/sections",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "sections"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Section",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"A\",\n  \"sortOrder\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/classes/sections",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "sections"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Class-Sections",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/classes/class-sections?classId=",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "class-sections"
+                            ],
+                            "query": [
+                                {
+                                    "key": "classId",
+                                    "value": ""
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Class-Section",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"classId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"sectionId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"academicYearId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"capacity\": 40\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/classes/class-sections",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "classes",
+                                "class-sections"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Subjects",
+            "item": [
+                {
+                    "name": "Get Subjects",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/subjects",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "subjects"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Subject",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Mathematics\",\n  \"code\": \"MATH101\",\n  \"description\": \"Advanced Mathematics\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/subjects",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "subjects"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Subject Mappings",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/subjects/teacher-mappings?classSectionId=&academicYearId=",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "subjects",
+                                "teacher-mappings"
+                            ],
+                            "query": [
+                                {
+                                    "key": "classSectionId",
+                                    "value": ""
+                                },
+                                {
+                                    "key": "academicYearId",
+                                    "value": ""
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Map Subject-Teacher",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"subjectId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"staffId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"classSectionId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"academicYearId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/subjects/teacher-mappings",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "subjects",
+                                "teacher-mappings"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Exams",
+            "item": [
+                {
+                    "name": "Get Exam Terms",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/exams/terms?academicYearId=3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams",
+                                "terms"
+                            ],
+                            "query": [
+                                {
+                                    "key": "academicYearId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Exam Term",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Mid-term Examination\",\n  \"termType\": 0,\n  \"startDate\": \"2026-06-01T00:00:00Z\",\n  \"endDate\": \"2026-06-15T00:00:00Z\",\n  \"academicYearId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/exams/terms",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams",
+                                "terms"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Grade Definitions",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/exams/grades?academicYearId=3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams",
+                                "grades"
+                            ],
+                            "query": [
+                                {
+                                    "key": "academicYearId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Grade Definition",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"label\": \"A+\",\n  \"minPercentage\": 90,\n  \"maxPercentage\": 100,\n  \"gradePoint\": 10,\n  \"description\": \"Outstanding\",\n  \"academicYearId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/exams/grades",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams",
+                                "grades"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Exams",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/exams?examTermId=&classSectionId=&subjectId=",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams"
+                            ],
+                            "query": [
+                                {
+                                    "key": "examTermId",
+                                    "value": ""
+                                },
+                                {
+                                    "key": "classSectionId",
+                                    "value": ""
+                                },
+                                {
+                                    "key": "subjectId",
+                                    "value": ""
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Exam",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"examTermId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"subjectId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"classSectionId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"examDate\": \"2026-06-05T09:00:00Z\",\n  \"maxMarks\": 100,\n  \"passingMarks\": 40\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/exams",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Exam Results",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/exams/results?examId=&studentId=&examTermId=",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams",
+                                "results"
+                            ],
+                            "query": [
+                                {
+                                    "key": "examId",
+                                    "value": ""
+                                },
+                                {
+                                    "key": "studentId",
+                                    "value": ""
+                                },
+                                {
+                                    "key": "examTermId",
+                                    "value": ""
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Record Exam Result",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"examId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"studentId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"marksObtained\": 85,\n  \"remarks\": \"Good performance\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/exams/results",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams",
+                                "results"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Report Card",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/exams/report-card/:studentId?examTermId=3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams",
+                                "report-card",
+                                ":studentId"
+                            ],
+                            "query": [
+                                {
+                                    "key": "examTermId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ],
+                            "variable": [
+                                {
+                                    "key": "studentId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Report Card Template",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Standard Report Card\",\n  \"templateConfig\": \"{\\\"header\\\":\\\"School Name\\\",\\\"footer\\\":\\\"Principal Signature\\\"}\",\n  \"academicYearId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/exams/report-card-templates",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "exams",
+                                "report-card-templates"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Timetable",
+            "item": [
+                {
+                    "name": "Get Time Slots",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/timetable/time-slots",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "timetable",
+                                "time-slots"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Time Slot",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Period 1\",\n  \"startTime\": \"08:00:00\",\n  \"endTime\": \"08:45:00\",\n  \"sortOrder\": 1\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/timetable/time-slots",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "timetable",
+                                "time-slots"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Timetable by Class",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/timetable/by-class?classSectionId=3fa85f64-5717-4562-b3fc-2c963f66afa6&academicYearId=3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "timetable",
+                                "by-class"
+                            ],
+                            "query": [
+                                {
+                                    "key": "classSectionId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                },
+                                {
+                                    "key": "academicYearId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Teacher Timetable",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/timetable/by-teacher?staffId=3fa85f64-5717-4562-b3fc-2c963f66afa6&academicYearId=3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "timetable",
+                                "by-teacher"
+                            ],
+                            "query": [
+                                {
+                                    "key": "staffId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                },
+                                {
+                                    "key": "academicYearId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Timetable Entry",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"classSectionId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"academicYearId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"subjectId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"staffId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"dayOfWeek\": 1,\n  \"timeSlotId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"room\": \"Room 101\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/timetable/entries",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "timetable",
+                                "entries"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Timetable Entry",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"id\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"subjectId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"staffId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"dayOfWeek\": 1,\n  \"timeSlotId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"room\": \"Room 102\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/timetable/entries/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "timetable",
+                                "entries",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Timetable Entry",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/timetable/entries/:id",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "timetable",
+                                "entries",
+                                ":id"
+                            ],
+                            "variable": [
+                                {
+                                    "key": "id",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Promotions",
+            "item": [
+                {
+                    "name": "Get Promotion Preview",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/promotions/preview?fromClassSectionId=3fa85f64-5717-4562-b3fc-2c963f66afa6&academicYearId=3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "promotions",
+                                "preview"
+                            ],
+                            "query": [
+                                {
+                                    "key": "fromClassSectionId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                },
+                                {
+                                    "key": "academicYearId",
+                                    "value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                }
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Bulk Promote Students",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"fromClassSectionId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"toClassSectionId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"academicYearId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n  \"studentIds\": [\n    \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\n    \"3fa85f64-5717-4562-b3fc-2c963f66afa7\"\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/promotions/bulk",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "promotions",
+                                "bulk"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
