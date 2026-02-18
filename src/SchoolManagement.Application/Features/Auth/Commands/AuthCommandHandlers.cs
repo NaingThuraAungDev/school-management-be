@@ -31,9 +31,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
         // Generate tokens
         var token = await _jwtTokenService.GenerateTokenAsync(
-            loginResult.UserId!, 
-            loginResult.Email!, 
-            loginResult.Roles!, 
+            loginResult.UserId!,
+            loginResult.Email!,
+            loginResult.Roles!,
             loginResult.UserType);
         var refreshToken = _jwtTokenService.GenerateRefreshToken();
 
