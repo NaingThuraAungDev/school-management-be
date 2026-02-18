@@ -14,6 +14,32 @@ public class IdentityService : IIdentityService
         _roleManager = roleManager;
     }
 
+    public async Task<(bool Succeeded, string? UserId, string? Email, string? UserType, IList<string>? Roles, string Message)> LoginAsync(string email, string password)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+        if (user == null)
+            return (false, null, null, null, null, "Invalid email or password.");
+
+        var isPasswordValid = await _userManager.CheckPasswordAsync(user, password);
+        if (!isPasswordValid)
+            return (false, null, null, null, null, "Invalid email or password.");
+
+        var roles = await _userManager.GetRolesAsync(user);
+        return (true, user.Id, user.Email, user.UserType.ToString(), roles, "Login successful.");
+    }
+
+    public async Task<(bool Succeeded, string RefreshToken)> UpdateRefreshTokenAsync(string userId, string refreshToken, DateTime expiryTime)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            return (false, string.Empty);
+
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiryTime = expiryTime;
+        var result = await _userManager.UpdateAsync(user);
+        return (result.Succeeded, refreshToken);
+    }
+
     public async Task<(string UserId, string Message)> CreateUserAsync(string email, string password, string role)
     {
         var existingUser = await _userManager.FindByEmailAsync(email);
